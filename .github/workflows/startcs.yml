@@ -1,13 +1,13 @@
 name: Codespace Scheduler
 
 on:
-  #schedule:
+  schedule:
     # 核心修改点：
     # 分钟：0,30 (每小时的第0分钟和第30分钟执行)
     # 小时：8-15 (从下午16点到晚上23点)
     # 后面三个 * 分别代表：日、月、周
     # 注意：GitHub Action 使用的是 UTC 时间
-    #- cron: '0,30 8-15 * * *'
+    - cron: '0,30 8-15 * * *'
   workflow_dispatch: # 保持保留，方便手动测试
 
 jobs:
