@@ -1,0 +1,26 @@
+name: Codespace Scheduler
+
+on:
+  schedule:
+    # 核心修改点：
+    # 分钟：0,30 (每小时的第0分钟和第30分钟执行)
+    # 小时：8-15 (从下午16点到晚上23点)
+    # 后面三个 * 分别代表：日、月、周
+    # 注意：GitHub Action 使用的是 UTC 时间
+    - cron: '0,30 8-15 * * *'
+  workflow_dispatch: # 保持保留，方便手动测试
+
+jobs:
+  codespace_scheduler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Codespace Scheduler
+        uses: ud803/github-codespace-scheduler@v1.0.6
+        env:
+          # 请确保 secrets.MY_GH_PAT 已经按照之前的步骤配置好
+          GITHUB_AUTH: ${{ secrets.MY_GH_PAT }}
+        with:
+          # 填入你实际的 Codespace 名称
+          CODESPACE_NAME: "your-codespace-name"
+          # 这个参数是脚本启动后等待的时间，保持 200 即可
+          WAIT_SECONDS: 200
