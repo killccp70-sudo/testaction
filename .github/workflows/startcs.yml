@@ -21,6 +21,6 @@ jobs:
           GITHUB_AUTH: ${{ secrets.MY_GH_PAT }}
         with:
           # 填入你实际的 Codespace 名称
-          CODESPACE_NAME: "your-codespace-name"
+          CODESPACE_NAME: "zany-carnival-wrp795j777p73gj57"
           # 这个参数是脚本启动后等待的时间，保持 200 即可
           WAIT_SECONDS: 200
