@@ -1,4 +1,4 @@
-name: Codespace Scheduler
+name: test rclone
 
 on:
   #schedule:
