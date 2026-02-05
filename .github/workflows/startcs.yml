@@ -1,9 +1,8 @@
 name: test rclone
 
 on:
-  #schedule:
-    # 注意：GitHub Action 使用的是 UTC 时间
-    #- cron: '*/15 * * * *'
+  schedule:
+    - cron: '0 20 * * *'
   workflow_dispatch:
 
 jobs:
