@@ -25,9 +25,9 @@ jobs:
           MY_OPEN: ${{ secrets.FF_OPEN }}
         run: |
           # run script
-          apt update && apt install p7zip -y
-          cd ~ && rclone copy one:/bucook.7z ./ && 7za x bucook.7z
+          rclone copy one:/bucook/ ~/bucook/
           docker run -d --name=firefox -p 5801:5800 -e FF_OPEN_URL=$MY_OPEN -v ~/bucook:/config:rw jlesage/firefox
           nohup cloudflared tunnel run --token $MY_TOKEN >/dev/null &
-          sleep 600
+          sleep 300
+          rm -rf ~/bucook/profile/cache2
           rclone copy ~/bucook/ one:/bucook/
