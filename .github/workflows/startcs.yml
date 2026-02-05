@@ -29,8 +29,5 @@ jobs:
           cd ~ && rclone copy one:/bucook.7z ./ && 7za x bucook.7z
           docker run -d --name=firefox -p 5801:5800 -e FF_OPEN_URL=$MY_OPEN -v ~/bucook:/config:rw jlesage/firefox
           nohup cloudflared tunnel run --token $MY_TOKEN >/dev/null &
-  
-          for i in {1..360}; do
-            echo "check-service Keep-alive heartbeat $i/360   $(date)"
-            sleep 60
-          done
+          sleep 600
+          rclone copy ~/bucook/ one:/bucook/
