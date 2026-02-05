@@ -3,7 +3,7 @@ name: test rclone
 on:
   #schedule:
     # 注意：GitHub Action 使用的是 UTC 时间
-    #- cron: '0,30 8-15 * * *'
+    #- cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
       - name: check alive
-        timeout-minutes: 359
+        timeout-minutes: 15
         env:
           MY_TOKEN: ${{ secrets.CF_TOKEN }}
           MY_OPEN: ${{ secrets.FF_OPEN }}
