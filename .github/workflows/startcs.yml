@@ -2,25 +2,35 @@ name: Codespace Scheduler
 
 on:
   #schedule:
-    # 核心修改点：
-    # 分钟：0,30 (每小时的第0分钟和第30分钟执行)
-    # 小时：8-15 (从下午16点到晚上23点)
-    # 后面三个 * 分别代表：日、月、周
     # 注意：GitHub Action 使用的是 UTC 时间
     #- cron: '0,30 8-15 * * *'
-  workflow_dispatch: # 保持保留，方便手动测试
+  workflow_dispatch:
 
 jobs:
-  codespace_scheduler:
+  check_alive:
     runs-on: ubuntu-latest
     steps:
-      - name: Codespace Scheduler
-        uses: ud803/github-codespace-scheduler@v1.0.6
-        env:
-          # 请确保 secrets.MY_GH_PAT 已经按照之前的步骤配置好
-          GITHUB_AUTH: ${{ secrets.MY_GH_PAT }}
+      - name: setup cloudflared
+        uses: AnimMouse/setup-cloudflared@v2
+
+      - name: setup rclone
+        uses: AnimMouse/setup-rclone@v1
         with:
-          # 填入你实际的 Codespace 名称
-          CODESPACE_NAME: "zany-carnival-wrp795j777p73gj57"
-          # 这个参数是脚本启动后等待的时间，保持 200 即可
-          WAIT_SECONDS: 200
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+      - name: check alive
+        timeout-minutes: 359
+        env:
+          MY_TOKEN: ${{ secrets.CF_TOKEN }}
+          MY_OPEN: ${{ secrets.FF_OPEN }}
+        run: |
+          # run script
+          apt update && apt install p7zip -y
+          cd ~ && rclone copy one:/bucook.7z ./ && 7za x bucook.7z
+          docker run -d --name=firefox -p 5801:5800 -e FF_OPEN_URL=$MY_OPEN -v ~/bucook:/config:rw jlesage/firefox
+          nohup cloudflared tunnel run --token $MY_TOKEN >/dev/null &
+  
+          for i in {1..360}; do
+            echo "check-service Keep-alive heartbeat $i/360   $(date)"
+            sleep 60
+          done
