@@ -18,13 +18,11 @@ jobs:
       - run:
           name: 启动 Firefox 容器
           command: |
-            # 启动一个带 Web 访问界面的 Firefox 容器
-            # 5800 端口是 Web 界面，5900 是原生 VNC
-            podman run -d \
-              --name firefox-browser \
-              -p 5800:5800 \
-              -v /dev/shm:/dev/shm \
-              docker.io/jlesage/firefox:latest
+            # 显式告诉 podman 不要去找 systemd
+            mkdir -p ~/.config/containers
+            echo -e "[engine]\ncgroup_manager = \"cgroupfs\"\nevents_backend = \"file\"" > ~/.config/containers/containers.conf
+
+            podman run -d -p 5800:5800 docker.io/jlesage/firefox:latest
             
             # 等待容器启动
             sleep 10
