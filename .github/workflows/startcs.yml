@@ -2,8 +2,12 @@ name: test rclone
 
 on:
   schedule:
-    - cron: '50 11 * * *'
+    - cron: '41,50,59 11 * * *'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}          # 或使用更固定的名称
+  cancel-in-progress: true               # 关键：取消正在运行的旧实例
 
 jobs:
   check_alive:
