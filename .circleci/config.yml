@@ -3,9 +3,8 @@ version: 2.1
 jobs:
   run-firefox-podman:
     machine:
-      # 使用 2024 或 2026 版本的 Ubuntu 镜像，内置环境更现代
-      image: ubuntu-2204:2024.05.1
-    resource_class: linux.medium
+      image: ubuntu-2404:current
+    resource_class: medium
     steps:
       - checkout
       
