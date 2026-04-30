@@ -1,0 +1,44 @@
+version: 2.1
+
+jobs:
+  run-firefox-podman:
+    machine:
+      # 使用 2024 或 2026 版本的 Ubuntu 镜像，内置环境更现代
+      image: ubuntu-2204:2024.05.1
+    resource_class: linux.medium
+    steps:
+      - checkout
+      
+      - run:
+          name: 安装 Podman
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y podman
+            podman --version
+
+      - run:
+          name: 启动 Firefox 容器
+          command: |
+            # 启动一个带 Web 访问界面的 Firefox 容器
+            # 5800 端口是 Web 界面，5900 是原生 VNC
+            podman run -d \
+              --name firefox-browser \
+              -p 5800:5800 \
+              -v /dev/shm:/dev/shm \
+              jlesage/firefox:latest
+            
+            # 等待容器启动
+            sleep 10
+            podman ps
+
+      - run:
+          name: 验证 Firefox 连通性
+          no_output_timeout: 55m
+          command: |
+            # 尝试访问容器的 Web 界面端口
+            curl -I http://localhost:5800
+
+workflows:
+  browser-suite:
+    jobs:
+      - run-firefox-podman
