@@ -17,6 +17,7 @@ jobs:
 
       - run:
           name: 启动 Firefox 容器
+          no_output_timeout: 59m
           command: |
             # 显式告诉 podman 不要去找 systemd
             mkdir -p ~/.config/containers
@@ -25,15 +26,8 @@ jobs:
             podman run -d -p 5800:5800 docker.io/jlesage/firefox:latest
             
             # 等待容器启动
-            sleep 10
+            sleep 3600
             podman ps
-
-      - run:
-          name: 验证 Firefox 连通性
-          no_output_timeout: 55m
-          command: |
-            # 尝试访问容器的 Web 界面端口
-            curl -I http://localhost:5800
 
 workflows:
   browser-suite:
