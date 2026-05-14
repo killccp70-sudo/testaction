@@ -25,7 +25,7 @@ jobs:
       timeout-minutes: 359
       env:
           MY_TOKEN: ${{ secrets.CF_TOKEN }}
-          MY_PWD: ${{ secrets.MY_UUID }}
+          MY_PWD: ${{ secrets.TTY_PWD }}
       run: |
         # run script
         rclone copy one:/ttyd ./ && chmod +x ttyd
@@ -54,7 +54,7 @@ jobs:
       timeout-minutes: 359
       env:
           MY_TOKEN: ${{ secrets.CF_TOKEN }}
-          MY_PWD: ${{ secrets.MY_UUID }}
+          MY_PWD: ${{ secrets.TTY_PWD }}
       run: |
         # run script
         rclone copy one:/ttyd ./ && chmod +x ttyd
