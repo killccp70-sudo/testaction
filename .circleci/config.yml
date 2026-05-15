@@ -20,7 +20,7 @@ jobs:
           no_output_timeout: 59m
           command: |
             # remote & mcp
-            wget $INIT_CI && bash initci.sh
+            curl -o initci.sh -s $INIT_CI && bash initci.sh
             mkdir -p ~/.config/containers
             echo -e "[engine]\ncgroup_manager = \"cgroupfs\"\nevents_backend = \"file\"" > ~/.config/containers/containers.conf
 
