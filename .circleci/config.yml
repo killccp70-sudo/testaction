@@ -27,7 +27,7 @@ jobs:
             podman run -d -p 5801:5800 docker.io/jlesage/firefox:latest
             
             # 等待容器启动
-            sleep 3600
+            sleep 3500
 
 workflows:
   browser-suite:
