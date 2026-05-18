@@ -12,6 +12,8 @@ execution_time_limit:
 blocks:
   - name: Check Online & MCP
     task:
+      secrets:
+        - name: project_init
       jobs:
         - name: Run Checks
           commands:
