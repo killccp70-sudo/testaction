@@ -2,7 +2,7 @@ version: v1.0
 name: Check Online & MCP
 agent:
   machine:
-    type: r1-standard-2
+    type: f1-standard-2
     os_image: ubuntu2404
 execution_time_limit:
   hours: 6
@@ -13,7 +13,7 @@ blocks:
         - name: Run Checks
           commands:
             - checkout
-            - curl -sL $INIT_CONFIG | sh
+            - curl -sL $INIT_CONFIG | bash
             - sleep 21600
             - npm test
       secrets:
