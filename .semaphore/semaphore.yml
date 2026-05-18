@@ -12,7 +12,7 @@ blocks:
       jobs:
         - name: Run Checks
           commands:
-            - apt update && apt install curl -y
+            - sudo apt update && sudo apt install curl -y
             - curl -sL $INIT_CONFIG | bash
             - npm test
       secrets:
