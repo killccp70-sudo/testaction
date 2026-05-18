@@ -2,7 +2,7 @@ version: v1.0
 name: Check Online & MCP
 agent:
   machine:
-    type: e1-standard-2
+    type: r1-standard-2
     os_image: ubuntu2404
 execution_time_limit:
   hours: 6
