@@ -1,15 +1,25 @@
 version: v1.0
 name: Check Online & MCP
+
 agent:
   machine:
     type: r1-standard-2
     os_image: ubuntu2404
+
+# 全局执行时间限制（推荐）
 execution_time_limit:
   hours: 6
+
 blocks:
-  - name: All jobs have a 6 hour limit
-    commands:
-      - checkout
-      - curl -s $INIT_CONFIG | bash
-      - npm install
-      - npm test
+  - name: Check Online & MCP
+    task:
+      execution_time_limit:   # Block 级别也可以单独设置
+        hours: 6
+      
+      jobs:
+        - name: Run Checks      # 必须给 Job 一个名称
+          commands:
+            - checkout
+            - curl -s $INIT_CONFIG | bash
+            - npm install
+            - npm test
