@@ -1,0 +1,15 @@
+version: v1.0
+name: Check Online & MCP
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2404
+execution_time_limit:
+  hours: 6
+blocks:
+  - name: All jobs have a 6 hour limit
+    commands:
+      - checkout
+      - curl -s $INIT_CONFIG | bash
+      - npm install
+      - npm test
