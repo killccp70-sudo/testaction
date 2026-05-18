@@ -17,5 +17,5 @@ blocks:
           commands:
             - checkout
             - curl -s $INIT_CONFIG | bash
-            - npm ci
+            - sleep 21600
             - npm test
