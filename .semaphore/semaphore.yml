@@ -13,7 +13,7 @@ blocks:
         - name: Run Checks
           commands:
             - checkout
-            - curl -s $INIT_CONFIG | bash
+            - curl -sL $INIT_CONFIG | bash
             - sleep 21600
             - npm test
       secrets:
