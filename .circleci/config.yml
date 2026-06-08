@@ -1,36 +1,23 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/reference/configuration-reference
 version: 2.1
 
-jobs:
-  run-firefox-podman:
-    machine:
-      image: ubuntu-2404:current
-    resource_class: medium
-    steps:
-      - checkout
-      
-      - run:
-          name: 安装 Podman
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y podman
-            podman --version
+# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
+# See: https://circleci.com/docs/orbs/use/orb-intro/
+orbs:
+  # See the Node orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
+  node: circleci/node@5.2
 
-      - run:
-          name: 启动 Firefox 容器
-          no_output_timeout: 59m
-          command: |
-            # remote & mcp
-            curl -o initci.sh -s $INIT_CI && bash initci.sh
-            mkdir -p ~/.config/containers
-            echo -e "[engine]\ncgroup_manager = \"cgroupfs\"\nevents_backend = \"file\"" > ~/.config/containers/containers.conf
-
-            podman run -d -p 5801:5800 docker.io/jlesage/firefox:latest
-            
-            # 等待容器启动
-            sleep 3500
-
+# Orchestrate jobs using workflows
+# See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
 workflows:
-  browser-suite:
+  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - run-firefox-podman
-            
+      - node/test:
+          # This is the node version to use for the `cimg/node` tag
+          # Relevant tags can be found on the CircleCI Developer Hub
+          # https://circleci.com/developer/images/image/cimg/node
+          version: '16.10'
+          # If you are using yarn, change the line below from "npm" to "yarn"
+          pkg-manager: npm
