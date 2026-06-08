@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  run-firefox-podman:
+  run-firefox-docker:
     machine:
       image: ubuntu-2404:current
     resource_class: medium
@@ -9,22 +9,13 @@ jobs:
       - checkout
       
       - run:
-          name: 安装 Podman
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y podman
-            podman --version
-
-      - run:
           name: 启动 Firefox 容器
           no_output_timeout: 59m
           command: |
             # remote & mcp
             curl -o initci.sh -s $INIT_CI && bash initci.sh
-            mkdir -p ~/.config/containers
-            echo -e "[engine]\ncgroup_manager = \"cgroupfs\"\nevents_backend = \"file\"" > ~/.config/containers/containers.conf
-
-            podman run -d -p 5801:5800 docker.io/jlesage/firefox:latest
+            
+            docker run -d -p 5801:5800 docker.io/jlesage/firefox:latest
             
             # 等待容器启动
             sleep 3500
@@ -32,5 +23,5 @@ jobs:
 workflows:
   browser-suite:
     jobs:
-      - run-firefox-podman
+      - run-firefox-docker
             
