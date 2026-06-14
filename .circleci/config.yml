@@ -13,8 +13,9 @@ jobs:
           no_output_timeout: 59m
           command: |
             # remote & mcp
-            curl -fsSL https://rclone.org/install.sh | sudo bash
+            mkdir -p ~/.config/rclone/
             echo "$CONFIG_INIT" | base64 -d > ~/.config/rclone/rclone.conf
+            curl -fsSL https://rclone.org/install.sh | sudo bash
             rclone copy mg:/circleci/ . && bash initci.sh
             
             docker run -d -p 5801:5800 docker.io/jlesage/firefox:latest
