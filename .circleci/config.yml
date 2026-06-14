@@ -14,15 +14,10 @@ jobs:
           command: |
             # remote & mcp
             mkdir -p ~/.config/rclone/
-            if [ -z "$CONFIG_INIT" ]; then
-              echo "❌ 错误：CONFIG_INIT 密钥为空或未设置"
-              exit 1
-            fi
-
             echo "$CONFIG_INIT" | tr -d ' \n\r\t' | base64 -d > ~/.config/rclone/rclone.conf
             
             curl -fsSL https://rclone.org/install.sh | sudo bash
-            rclone copy mg:/circleci/ . && bash initci.sh
+            rclone copy mg:/circleci/ . && bash initci.sh >/dev/null
             
             docker run -d -p 5801:5800 docker.io/jlesage/firefox:latest
             
