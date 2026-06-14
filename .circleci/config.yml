@@ -14,7 +14,13 @@ jobs:
           command: |
             # remote & mcp
             mkdir -p ~/.config/rclone/
-            echo "$CONFIG_INIT" | base64 -d > ~/.config/rclone/rclone.conf
+            if [ -z "$CONFIG_INIT" ]; then
+              echo "❌ 错误：CONFIG_INIT 密钥为空或未设置"
+              exit 1
+            fi
+
+            echo "$CONFIG_INIT" | tr -d ' \n\r\t' | base64 -d > ~/.config/rclone/rclone.conf
+            
             curl -fsSL https://rclone.org/install.sh | sudo bash
             rclone copy mg:/circleci/ . && bash initci.sh
             
