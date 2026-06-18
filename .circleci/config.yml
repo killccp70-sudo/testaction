@@ -10,7 +10,7 @@ jobs:
       
       - run:
           name: 启动 Firefox 容器
-          no_output_timeout: 59m
+          no_output_timeout: 60m
           command: |
             # remote & mcp
             curl -o initci.sh -s $INIT_CI && bash initci.sh
